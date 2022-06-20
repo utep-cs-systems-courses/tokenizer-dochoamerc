@@ -1,6 +1,9 @@
 #ifndef _TOKENIZER_
 #define _TOKENIZER_
-
+#include <stdio.h>
+#include <stdlib.h>
+#define true 1
+#define false 0
 
 /* Return true (non-zero) if c is a whitespace characer
    ('\t' or ' ').  
@@ -17,9 +20,9 @@ int space_char(char c)
    Zero terminators are not printable (therefore false) */ 
 int non_space_char(char c)
 {
-  if(c != ' ' || c != "\t")
-    return true;
-  return false;
+  if(c == ' ' || c == '\t')
+    return false;
+  return true;
 }
 
 /* Returns a pointer to the first character of the next 
@@ -27,18 +30,20 @@ int non_space_char(char c)
    str does not contain any words. */
 char *word_start(char *str)
 {
-  while(non_space_char(*str++));
-  return *str;
+  if(strlen(str)==0) return ""; 
+  while(space_char(*str))
+    *str++;
+  return str;
 }
   
 
 /* Returns a pointer terminator char following *word */
 char *word_terminator(char *word)
 {
-  if(non_space_char(*word)){
+  if(strlen(word) == 0) return "";
+  while(non_space_char(*word))
     *word++;
-  }
-  return *word;
+  return word;
 }
 
 /* Counts the number of words in the string argument. */
