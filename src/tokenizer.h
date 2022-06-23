@@ -30,7 +30,7 @@ int non_space_char(char c)
    str does not contain any words. */
 char *word_start(char *str)
 {
-  if(strlen(str)==0) return ""; 
+  if(strlen(str)==0) return 0;
   while(space_char(*str))
     *str++;
   return str;
@@ -40,14 +40,29 @@ char *word_start(char *str)
 /* Returns a pointer terminator char following *word */
 char *word_terminator(char *word)
 {
-  if(strlen(word) == 0) return "";
-  while(non_space_char(*word))
-    *word++;
-  return word;
+  if(strlen(word) == 0) return word;
+  char *temp = word_start(word);
+  while(non_space_char(*temp))
+  {
+    *temp++;
+    if(*temp == '\0') return 0;
+  }
+  return temp;
 }
 
 /* Counts the number of words in the string argument. */
-int count_words(char *str);
+int count_words(char *str)
+{
+  if(strlen(str) == 0) return 0;
+  int wordCount = 1;
+  char *temp = str;
+  while((temp = word_terminator(temp)) != NULL) {
+    wordCount++;
+  }
+
+  return wordCount;
+}
+
 
 /* Returns a fresly allocated new zero-terminated string 
    containing <len> chars from <inStr> */

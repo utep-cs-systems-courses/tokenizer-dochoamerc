@@ -27,24 +27,30 @@ static char *test_non_space_char() {
 }
 
 static char *test_find_word_start() {
-    char *str = "  happy";
+  char *str = "  happy", *empty="", *str2="happy happy joy";
     mu_assert("word_start('  happy') == &str[2]'", word_start(str) == &str[2]);
+    mu_assert("word_start(emptyStr) == empty", word_start(empty) == NULL);
+    mu_assert("word_start('happy happy joy') == &str2[0]", word_start(str2) == &str2[0]);
     return 0;
 }
 
 static char *test_find_word_terminator() {
-  char *str = "happy joy", *empty="";
-    mu_assert("word_terminator('happy joy') == &str[5]' '", word_terminator(str) == &str[5]);
+  char *str = "happy joy", *empty="", *str2="  happy test", *str3 = "  happy";
+    mu_assert("word_terminator('happy joy') == &str[5]'", word_terminator(str) == &str[5]);
     mu_assert("word_terminator(emptyStr) == empty", word_terminator(empty) == empty);
-    return 0;
-}
-/*
-static char *test_count_words() {
-    char *str = "happy happy joy joy";
-    mu_assert("count_words('happy happy joy joy') == 4", count_words(str) == 4);
+    mu_assert("word_terminator('  happy test') == &str2[7]", word_terminator(str2) == &str2[7]);
+    mu_assert("word_terminator('  happy') == 0", word_terminator(str3) == 0);
     return 0;
 }
 
+static char *test_count_words() {
+  char *str = "happy happy joy joy", *str2 = "test", *str3 = "  test 1";
+  mu_assert("count_words('happy happy joy joy') == 4", count_words(str) == 4);
+  mu_assert("count_words('test') == 1", count_words(str2) == 1);
+  mu_assert("count_worrds('  test 1') == 2",count_words(str3) == 2);
+  return 0;
+}
+/*
 static char *test_tokenize() {
     char *str = "happy happy joy joy";
     char **tokens = tokenize(str);
@@ -80,7 +86,7 @@ static char *all_tests() {
         mu_run_test(test_non_space_char);
         mu_run_test(test_find_word_start);
         mu_run_test(test_find_word_terminator);
-	// mu_run_test(test_count_words);
+	mu_run_test(test_count_words);
 	// mu_run_test(test_tokenize);
     }
 
