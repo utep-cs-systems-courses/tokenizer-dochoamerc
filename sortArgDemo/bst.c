@@ -1,7 +1,7 @@
 #include "malloc.h"
 #include "bst.h"
 
-BstNode *root = 0;
+BstNode *bstRoot = 0;
 
 int bstStrcmp(char *a, char *b) /* return pos if string a > string b, 0 if equal, neg otherwise */
 {
