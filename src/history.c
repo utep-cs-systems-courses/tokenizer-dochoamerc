@@ -1,5 +1,6 @@
 #ifndef _HISTORY_
 #define _HISTORY_
+#include "tokenizer.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -29,9 +30,10 @@ List* init_history()
 */
 void add_history(List *list, char *str)
 {
+  char *copy = copy_str(str, length(str));
   if(list->root->str == 0)
   {
-    list->root->str = str;
+    list->root->str = copy;
     list->root->next = 0;
   } else {
     int id = 2;
@@ -43,7 +45,7 @@ void add_history(List *list, char *str)
     }
     Item* newNode = (Item*) malloc(sizeof(Item)*1);
     newNode->id = id;
-    newNode->str = str;
+    newNode->str = copy;
     newNode->next = NULL;
     lastNode->next = newNode;
   }
@@ -55,10 +57,12 @@ void add_history(List *list, char *str)
 char *get_history(List *list, int id)
 {
   Item* currentNode = list->root;
-  while(currentNode->id != id)
+  while((currentNode->id) != id)
   {
+    if(currentNode->next == NULL) return "No match";
     currentNode = currentNode->next;
   }
+  
   return currentNode->str;
 }
       
@@ -71,7 +75,7 @@ void print_history(List *list)
 
   while(currentNode != NULL)
   {
-    printf("%s\n", currentNode->str);
+    printf("ID: %d - '%s'\n", currentNode->id, currentNode->str);
     currentNode = currentNode->next;
   }      
 }
@@ -84,9 +88,9 @@ void free_history(List *list)
   while(currentNode != NULL)
   {
     next = currentNode->next;
+    free(currentNode->str);
     free(currentNode);
     currentNode = next;
   }
 }
 #endif
-

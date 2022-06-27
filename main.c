@@ -26,13 +26,15 @@ int main()
     printf("Print all tokens:\n",0);
     print_tokens(tokens);
     
-    char *copy = copy_str(s, length(s));
-    add_history(list, copy);
+    add_history(list, str);
 
   }
 
   printf("\nHistory\n");
-  printf("ID 2: %s\n", get_history(list, 2));
+  printf("Enter history id you'd like to see again:\n>",0);
+  int c;
+  scanf("%d", &c);
+  printf("ID %d: %s\n", c, get_history(list, c));
   printf("All history:\n",0);
   print_history(list);
 
