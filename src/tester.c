@@ -27,10 +27,11 @@ static char *test_non_space_char() {
 }
 
 static char *test_find_word_start() {
-  char *str = "  happy", *empty="", *str2="happy happy joy";
+  char *str = "  happy", *empty="", *str2="happy happy joy", *str3="    ";
     mu_assert("word_start('  happy') == &str[2]'", word_start(str) == &str[2]);
     mu_assert("word_start(emptyStr) == empty", word_start(empty) == NULL);
     mu_assert("word_start('happy happy joy') == &str2[0]", word_start(str2) == &str2[0]);
+    mu_assert("word_start('    ') == NULL", word_start(str3) == NULL);
     return 0;
 }
 
@@ -44,13 +45,14 @@ static char *test_find_word_terminator() {
 }
 
 static char *test_count_words() {
-  char *str = "happy happy joy joy", *str2 = "test", *str3 = "  test 1";
+  char *str = "happy happy joy joy", *str2 = "test", *str3 = "  test 1", *str4 = "test 1  ", *copy;
   mu_assert("count_words('happy happy joy joy') == 4", count_words(str) == 4);
   mu_assert("count_words('test') == 1", count_words(str2) == 1);
-  mu_assert("count_worrds('  test 1') == 2",count_words(str3) == 2);
+  mu_assert("count_words('  test 1') == 2", count_words(str3) == 2);
+  mu_assert("Copy str = 'happy happy joy joy'", *(copy = copy_str(str,19)) == *str);
   return 0;
 }
-/*
+
 static char *test_tokenize() {
     char *str = "happy happy joy joy";
     char **tokens = tokenize(str);
@@ -58,12 +60,13 @@ static char *test_tokenize() {
     mu_assert("tokens[1] == 'happy'", strcmp(tokens[1], "happy") == 0);
     mu_assert("tokens[2] == 'joy'", strcmp(tokens[2], "joy") == 0);
     mu_assert("tokens[3] == 'joy'", strcmp(tokens[3], "joy") == 0);
+    print_tokens(tokens);
     free_tokens(tokens);
     return 0;
 }
-*/
+
 /* History test cases */
-/*
+
 static char *test_add_history() {
     List* list = init_history();
     add_history(list, "happy");
@@ -76,26 +79,30 @@ static char *test_add_history() {
 static char *test_get_history() {
     List* list = init_history();
     add_history(list, "happy");
+    add_history(list, "joy");
     mu_assert("get_history(list, 1)", strcmp(get_history(list, 1), "happy") == 0);
+    mu_assert("get_history(list, 2)", strcmp(get_history(list, 2), "joy") == 0);
+    //print_history(list);
+    free_history(list);
     return 0;
 }
-*/
+
 
 static char *all_tests() {
-    if (TEST_TOKENIZER) {
+  if (TEST_TOKENIZER) {
         mu_run_test(test_non_space_char);
         mu_run_test(test_find_word_start);
         mu_run_test(test_find_word_terminator);
 	mu_run_test(test_count_words);
-	// mu_run_test(test_tokenize);
+	mu_run_test(test_tokenize);
     }
+ 
+  if (TEST_HISTORY) {
+      mu_run_test(test_add_history);
+      mu_run_test(test_get_history);
+  }
 
-    /*    if (TEST_HISTORY) {
-        mu_run_test(test_add_history);
-        mu_run_test(test_get_history);
-	}*/
-
-    return 0;
+  return 0;
 }
 
  int main(int argc, char **argv) {   

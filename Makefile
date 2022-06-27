@@ -1,17 +1,16 @@
 
-OBJS= main.o
+OBJS= main.o src/tokenizer.o src/history.o
 
-#CFLAGS=-g -03
+#compiler flags. -g for debug, -O3 for optimization
+CFLAGS=-g -O3
 
 all: reader
 
 reader: $(OBJS)
 	cc -o reader $(CFLAGS) $(OBJS)
 
-#$(OBJS):
-
 clean:
-	rm -f *.o reader
+	rm -f $(OBJS) reader
 
 run:reader
 	./reader
