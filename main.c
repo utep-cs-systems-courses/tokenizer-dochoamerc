@@ -30,11 +30,16 @@ int main()
 
   }
 
-  printf("\nHistory\n");
-  printf("Enter history id you'd like to see again:\n>",0);
-  int c;
-  scanf("%d", &c);
-  printf("ID %d: %s\n", c, get_history(list, c));
+  while(1){
+    
+    printf("\nHistory\n");
+    printf("Enter history id you'd like to see again:\n>",0);
+    int c;
+    scanf("%d", &c);
+    printf("ID %d: %s\n", c, get_history(list, c));
+    if(c == 0) break;
+  }
+  
   printf("All history:\n",0);
   print_history(list);
 

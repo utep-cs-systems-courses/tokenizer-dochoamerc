@@ -75,7 +75,7 @@ void print_history(List *list)
 
   while(currentNode != NULL)
   {
-    printf("ID: %d - '%s'\n", currentNode->id, currentNode->str);
+    printf("ID: %d - %s\n", currentNode->id, currentNode->str);
     currentNode = currentNode->next;
   }      
 }
